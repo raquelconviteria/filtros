@@ -3,38 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-  <meta name="theme-color" content="#15131b">
+  <meta name="theme-color" content="#141219">
   <title>Filtro Bailey 5 anos</title>
   <style>
-    :root{color-scheme:dark;--pink:#ff9bc3;--blue:#7fcfff;--gold:#ffc85a}
+    :root{color-scheme:dark;--pink:#f4a8c8;--blue:#a9d8ff;--app-h:100dvh}
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#15131b;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
-    #app{position:fixed;inset:0;display:grid;place-items:center;background:#15131b}
-    #stage{position:relative;width:min(100vw,56.25vh);height:min(177.7778vw,100vh);overflow:hidden;background:#08080a}
-    video,#preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-    video{transform:scaleX(-1)}
-    video.rear{transform:none}
-    #preview{display:none;z-index:8;background:#08080a}
-    #frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:3;pointer-events:none}
-    #sparkles{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
-    .spark{position:absolute;width:10px;height:10px;animation:twinkle var(--d) ease-in-out infinite;animation-delay:var(--delay);opacity:0;filter:drop-shadow(0 0 5px currentColor)}
-    .spark::before,.spark::after{content:"";position:absolute;background:currentColor;border-radius:999px}
-    .spark::before{left:4px;top:0;width:2px;height:10px}.spark::after{left:0;top:4px;width:10px;height:2px}
-    @keyframes twinkle{0%,100%{opacity:0;transform:scale(.3) rotate(0)}45%,60%{opacity:.95;transform:scale(1) rotate(45deg)}}
-    #topbar{position:absolute;z-index:10;left:0;right:0;top:0;padding:max(12px,env(safe-area-inset-top)) 12px 0;display:flex;justify-content:space-between;pointer-events:none}
-    .round{pointer-events:auto;width:44px;height:44px;border:1px solid #ffffff55;border-radius:50%;background:#15131bb8;color:#fff;font-size:20px;display:grid;place-items:center;backdrop-filter:blur(8px)}
-    #controls{position:absolute;z-index:10;left:0;right:0;bottom:0;padding:12px 12px max(14px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#09080dcc 28%);display:flex;flex-direction:column;gap:12px}
-    #filters{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:24px 2px 0}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#141219;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+    button{font:inherit}
+    #app{position:fixed;left:0;top:0;width:100%;height:var(--app-h);display:grid;place-items:center;background:#141219;overflow:hidden}
+    #stage{position:relative;width:min(100vw,calc(var(--app-h)*.5625));height:min(177.7778vw,var(--app-h));overflow:hidden;background:#08080a}
+    #camera,#photoResult,#videoResult{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    #camera{transform:scaleX(-1);z-index:1}
+    #camera.rear{transform:none}
+    #photoResult,#videoResult{display:none;z-index:20;background:#08080a}
+    #frame{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:4;pointer-events:none}
+    #sparkles{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+    .spark{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.66) 0,rgba(255,255,255,.20) 28%,rgba(255,255,255,0) 72%);filter:blur(.2px);opacity:.15;animation:floatGlow var(--d) ease-in-out infinite;animation-delay:var(--delay)}
+    .spark::after{content:"";position:absolute;inset:35%;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(2px)}
+    @keyframes floatGlow{0%,100%{opacity:.10;transform:translateY(7px) scale(.72)}50%{opacity:.55;transform:translateY(-8px) scale(1.08)}}
+    #topbar{position:absolute;z-index:12;left:0;right:0;top:0;padding:max(10px,env(safe-area-inset-top)) 10px 0;display:flex;justify-content:space-between;pointer-events:none}
+    .round{pointer-events:auto;width:42px;height:42px;border:1px solid #ffffff55;border-radius:50%;background:#15131bc7;color:#fff;font-size:19px;display:grid;place-items:center;backdrop-filter:blur(8px)}
+    #controls{position:absolute;z-index:12;left:0;right:0;bottom:0;padding:8px 10px max(10px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#09080de8 26%);display:flex;flex-direction:column;gap:7px}
+    #modes{align-self:center;display:flex;padding:3px;background:#111018b8;border-radius:999px;border:1px solid #ffffff35;backdrop-filter:blur(7px)}
+    .mode{border:0;background:transparent;color:#ffffffa8;font-size:12px;font-weight:800;border-radius:999px;padding:5px 14px}
+    .mode.active{background:#fff;color:#25212a}
+    #filters{display:flex;justify-content:center;gap:5px;overflow-x:auto;scrollbar-width:none}
     #filters::-webkit-scrollbar{display:none}
-    .filter{flex:0 0 auto;border:1px solid #ffffff50;background:#15131bb5;color:#fff;border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;backdrop-filter:blur(8px)}
+    .filter{flex:0 0 auto;border:1px solid #ffffff50;background:#15131bb5;color:#fff;border-radius:999px;padding:7px 11px;font-weight:750;font-size:12px;backdrop-filter:blur(8px)}
     .filter.active{border-color:#fff;background:linear-gradient(135deg,var(--pink),var(--blue));color:#25202a}
-    #actions{display:grid;grid-template-columns:1fr 78px 1fr;align-items:center}
-    #shot{width:70px;height:70px;border-radius:50%;border:5px solid #fff;background:linear-gradient(145deg,var(--pink),var(--blue));box-shadow:0 0 0 2px #0005;justify-self:center}
-    .labelBtn{border:0;background:transparent;color:#fff;font-weight:700;font-size:12px;text-shadow:0 1px 4px #000;text-align:center}
-    #status{position:absolute;z-index:20;inset:0;display:grid;place-items:center;text-align:center;padding:35px;color:#fff;background:#15131b}
+    #actions{height:58px;display:grid;grid-template-columns:1fr 66px 1fr;align-items:center}
+    #shot{position:relative;width:58px;height:58px;border-radius:50%;border:4px solid #fff;background:linear-gradient(145deg,var(--pink),var(--blue));box-shadow:0 0 0 2px #0005;justify-self:center}
+    #shot.video{background:#ef4f5f}
+    #shot.recording::after{content:"";position:absolute;inset:15px;border-radius:4px;background:#fff}
+    .labelBtn{border:0;background:transparent;color:#fff;font-weight:750;font-size:11px;line-height:1.15;text-shadow:0 1px 4px #000;text-align:center}
+    #timer{font-variant-numeric:tabular-nums;color:#fff;font-size:13px;font-weight:800;text-align:center;text-shadow:0 1px 4px #000}
+    #status{position:absolute;z-index:30;inset:0;display:grid;place-items:center;text-align:center;padding:35px;color:#fff;background:#15131b}
     #status button{border:0;border-radius:999px;padding:12px 20px;background:linear-gradient(135deg,var(--pink),var(--blue));font-weight:800;color:#24202a;margin-top:10px}
-    #resultActions{position:absolute;z-index:15;left:12px;right:12px;bottom:max(16px,env(safe-area-inset-bottom));display:none;grid-template-columns:1fr 1fr;gap:10px}
-    #resultActions button{border:0;border-radius:999px;padding:13px;font-weight:800;font-size:15px}
+    #resultActions{position:absolute;z-index:40;left:10px;right:10px;bottom:max(12px,env(safe-area-inset-bottom));display:none;grid-template-columns:1fr 1fr;gap:9px}
+    #resultActions button{border:0;border-radius:999px;padding:12px;font-weight:800;font-size:14px}
     #again{background:#fff;color:#222}#save{background:linear-gradient(135deg,var(--pink),var(--blue));color:#25202a}
     .hidden{display:none!important}
   </style>
@@ -42,92 +48,158 @@
 <body>
 <main id="app"><section id="stage">
   <video id="camera" autoplay playsinline muted></video>
-  <canvas id="preview" width="1152" height="2048"></canvas>
+  <canvas id="photoResult" width="1152" height="2048"></canvas>
+  <video id="videoResult" playsinline controls></video>
   <div id="sparkles"></div>
   <img id="frame" src="moldura.png" alt="Moldura Bailey 5 anos">
   <div id="topbar"><button id="torch" class="round" aria-label="Lanterna">⚡</button><button id="flip" class="round" aria-label="Trocar câmera">↻</button></div>
   <div id="controls">
+    <div id="modes"><button class="mode active" data-mode="photo">FOTO</button><button class="mode" data-mode="video">VÍDEO</button></div>
     <div id="filters">
       <button class="filter active" data-filter="natural">Natural</button>
       <button class="filter" data-filter="matte">Matte</button>
       <button class="filter" data-filter="rose">Rosé</button>
       <button class="filter" data-filter="glow">Glow</button>
     </div>
-    <div id="actions"><button id="sparkToggle" class="labelBtn">✨ Brilhos<br>ligados</button><button id="shot" aria-label="Tirar foto"></button><span></span></div>
+    <div id="actions"><button id="sparkToggle" class="labelBtn">Brilhos suaves<br>ligados</button><button id="shot" aria-label="Capturar"></button><span id="timer"></span></div>
   </div>
-  <div id="resultActions"><button id="again">Tirar outra</button><button id="save">Salvar foto</button></div>
+  <div id="resultActions"><button id="again">Fazer outro</button><button id="save">Salvar</button></div>
   <div id="status"><div><strong>Seu filtro está pronto ✨</strong><p>Permita o acesso à câmera para começar.</p><button id="start">Abrir câmera</button></div></div>
 </section></main>
+<canvas id="recordCanvas" width="720" height="1280" hidden></canvas>
 <script>
 (() => {
-  const video=document.querySelector('#camera'), frame=document.querySelector('#frame');
-  const canvas=document.querySelector('#preview'), ctx=canvas.getContext('2d',{alpha:false});
-  const status=document.querySelector('#status'), controls=document.querySelector('#controls');
-  const topbar=document.querySelector('#topbar'), resultActions=document.querySelector('#resultActions');
-  const sparkLayer=document.querySelector('#sparkles');
-  let stream, facing='user', selected='natural', sparklesOn=true, torchOn=false, lastBlob=null;
-  const filterCSS={natural:'none',matte:'contrast(.88) saturate(.86) brightness(1.08)',rose:'sepia(.12) saturate(1.08) hue-rotate(320deg) brightness(1.04)',glow:'brightness(1.09) contrast(.92) saturate(1.08)'};
+  const q=s=>document.querySelector(s);
+  const video=q('#camera'), frame=q('#frame'), photo=q('#photoResult'), pctx=photo.getContext('2d',{alpha:false});
+  const recCanvas=q('#recordCanvas'), rctx=recCanvas.getContext('2d',{alpha:false}), videoResult=q('#videoResult');
+  const status=q('#status'), controls=q('#controls'), topbar=q('#topbar'), resultActions=q('#resultActions'), sparkLayer=q('#sparkles');
+  const shot=q('#shot'), timer=q('#timer');
+  let stream, audioStream, facing='user', selected='natural', mode='photo', sparklesOn=true, torchOn=false;
+  let recorder, chunks=[], recording=false, raf=0, startedAt=0, lastBlob=null, lastKind='photo', resultURL='';
 
-  function makeSparkles(){
-    const colors=['#ffffff','#ffadd0','#80d7ff','#ffd66e'];
-    for(let i=0;i<24;i++){
-      const s=document.createElement('i'); s.className='spark';
-      s.style.left=(8+Math.random()*84)+'%'; s.style.top=(10+Math.random()*72)+'%';
-      s.style.color=colors[i%colors.length]; s.style.setProperty('--d',(1.7+Math.random()*2.2)+'s');
-      s.style.setProperty('--delay',(-Math.random()*3)+'s'); sparkLayer.appendChild(s);
-    }
-  }
-  makeSparkles();
+  function fitViewport(){document.documentElement.style.setProperty('--app-h',(window.visualViewport?.height||innerHeight)+'px')}
+  fitViewport(); addEventListener('resize',fitViewport); window.visualViewport?.addEventListener('resize',fitViewport);
+
+  const liveFilters={
+    natural:'none',
+    matte:'brightness(1.065) contrast(.86) saturate(.96)',
+    rose:'brightness(1.045) contrast(.91) saturate(1.04) sepia(.07) hue-rotate(320deg)',
+    glow:'brightness(1.075) contrast(.87) saturate(1.01)'
+  };
+  const particles=Array.from({length:22},(_,i)=>({
+    x:.10+Math.random()*.80,y:.12+Math.random()*.65,
+    size:10+Math.random()*25,phase:Math.random()*Math.PI*2,speed:.0007+Math.random()*.0012,
+    tint:i%3
+  }));
+  particles.forEach(p=>{
+    const s=document.createElement('i');s.className='spark';const z=p.size*.85;
+    s.style.cssText=`left:${p.x*100}%;top:${p.y*100}%;width:${z}px;height:${z}px;--d:${2.5+Math.random()*2.5}s;--delay:${-Math.random()*4}s`;
+    sparkLayer.appendChild(s);
+  });
 
   async function openCamera(){
     try{
-      if(stream) stream.getTracks().forEach(t=>t.stop());
+      stream?.getTracks().forEach(t=>t.stop());
       stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:facing},width:{ideal:1920},height:{ideal:1080}},audio:false});
-      video.srcObject=stream; video.classList.toggle('rear',facing==='environment'); await video.play();
-      status.classList.add('hidden'); document.querySelector('#torch').style.visibility=facing==='environment'?'visible':'hidden';
-    }catch(e){status.innerHTML='<div><strong>Não consegui abrir a câmera</strong><p>Confira se o navegador tem permissão para usar a câmera e abra o link por HTTPS.</p><button onclick="location.reload()">Tentar novamente</button></div>';}
+      video.srcObject=stream;video.classList.toggle('rear',facing==='environment');await video.play();
+      status.classList.add('hidden');q('#torch').style.visibility=facing==='environment'?'visible':'hidden';setLiveFilter();
+    }catch(e){status.innerHTML='<div><strong>Não consegui abrir a câmera</strong><p>Confira a permissão da câmera e abra o link pelo Safari ou Chrome.</p><button onclick="location.reload()">Tentar novamente</button></div>'}
   }
-
-  function setLiveFilter(){video.style.filter=filterCSS[selected];}
+  function setLiveFilter(){video.style.filter=liveFilters[selected]}
+  q('#start').onclick=openCamera;
+  q('#flip').onclick=async()=>{if(recording)return;facing=facing==='user'?'environment':'user';torchOn=false;await openCamera()};
+  q('#torch').onclick=async()=>{
+    const track=stream?.getVideoTracks()[0];if(!track)return;
+    try{torchOn=!torchOn;await track.applyConstraints({advanced:[{torch:torchOn}]})}catch(e){torchOn=false;alert('A lanterna não está disponível neste aparelho.')}
+  };
+  q('#sparkToggle').onclick=()=>{sparklesOn=!sparklesOn;sparkLayer.style.display=sparklesOn?'block':'none';q('#sparkToggle').innerHTML=`Brilhos suaves<br>${sparklesOn?'ligados':'desligados'}`};
   document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{
-    document.querySelector('.filter.active').classList.remove('active'); b.classList.add('active'); selected=b.dataset.filter; setLiveFilter();
+    if(recording)return;q('.filter.active').classList.remove('active');b.classList.add('active');selected=b.dataset.filter;setLiveFilter();
   });
-  document.querySelector('#start').onclick=openCamera;
-  document.querySelector('#flip').onclick=async()=>{facing=facing==='user'?'environment':'user';torchOn=false;await openCamera();};
-  document.querySelector('#sparkToggle').onclick=()=>{sparklesOn=!sparklesOn;sparkLayer.style.display=sparklesOn?'block':'none';document.querySelector('#sparkToggle').innerHTML=`✨ Brilhos<br>${sparklesOn?'ligados':'desligados'}`;};
-  document.querySelector('#torch').onclick=async()=>{
-    const track=stream?.getVideoTracks()[0]; if(!track)return;
-    try{torchOn=!torchOn;await track.applyConstraints({advanced:[{torch:torchOn}]});}catch(e){torchOn=false;alert('A lanterna não está disponível neste aparelho.');}
-  };
+  document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{
+    if(recording)return;q('.mode.active').classList.remove('active');b.classList.add('active');mode=b.dataset.mode;
+    shot.classList.toggle('video',mode==='video');timer.textContent=mode==='video'?'toque para gravar':'';
+  });
 
-  function coverRect(sw,sh,dw,dh){const scale=Math.max(dw/sw,dh/sh),w=sw*scale,h=sh*scale;return{x:(dw-w)/2,y:(dh-h)/2,w,h};}
-  function drawSparkle(x,y,size,color,alpha=1){ctx.save();ctx.globalAlpha=alpha;ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=size;ctx.beginPath();ctx.ellipse(x,y,size*.16,size,0,0,Math.PI*2);ctx.ellipse(x,y,size,size*.16,0,0,Math.PI*2);ctx.fill();ctx.restore();}
-  function addPhotoSparkles(){
-    const pts=[[.29,.23,14],[.72,.28,19],[.46,.34,12],[.62,.45,16],[.34,.53,18],[.76,.58,11],[.49,.66,16],[.24,.7,12],[.68,.74,20]];
-    const colors=['#fff','#ffb3d2','#84d8ff','#ffd36e'];pts.forEach((p,i)=>drawSparkle(p[0]*canvas.width,p[1]*canvas.height,p[2],colors[i%4],.92));
+  function coverRect(sw,sh,dw,dh){const scale=Math.max(dw/sw,dh/sh),w=sw*scale,h=sh*scale;return{x:(dw-w)/2,y:(dh-h)/2,w,h}}
+  function drawCamera(ctx,w,h){
+    const r=coverRect(video.videoWidth,video.videoHeight,w,h);ctx.save();ctx.filter=liveFilters[selected];
+    if(facing==='user'){ctx.translate(w,0);ctx.scale(-1,1);ctx.drawImage(video,r.x,r.y,r.w,r.h)}else ctx.drawImage(video,r.x,r.y,r.w,r.h);
+    ctx.restore();
   }
-  function addMatte(){ctx.save();ctx.globalCompositeOperation='screen';ctx.fillStyle='rgba(244,224,213,.11)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore();}
-  function addRose(){ctx.save();ctx.globalCompositeOperation='soft-light';ctx.fillStyle='rgba(255,128,178,.18)';ctx.fillRect(0,0,canvas.width,canvas.height);ctx.restore();}
-  function addGlow(){ctx.save();ctx.globalCompositeOperation='screen';const g=ctx.createRadialGradient(576,770,30,576,770,740);g.addColorStop(0,'rgba(255,255,255,.22)');g.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g;ctx.fillRect(0,0,1152,2048);ctx.restore();}
+  function beautyPass(ctx,w,h){
+    if(selected==='natural')return;
+    ctx.save();
+    if(selected==='matte'||selected==='glow'){
+      ctx.globalCompositeOperation='screen';ctx.globalAlpha=selected==='glow'?.075:.045;ctx.filter='blur(2px)';
+      ctx.drawImage(ctx.canvas,0,0,w,h);ctx.filter='none';
+      const g=ctx.createRadialGradient(w*.5,h*.42,w*.04,w*.5,h*.42,w*.6);
+      g.addColorStop(0,selected==='glow'?'rgba(255,246,240,.085)':'rgba(255,255,255,.045)');g.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.globalAlpha=1;ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    }else if(selected==='rose'){
+      ctx.globalCompositeOperation='soft-light';ctx.globalAlpha=.08;ctx.fillStyle='#f7b5c9';ctx.fillRect(0,0,w,h);
+    }
+    ctx.restore();
+  }
+  function drawSoftSparkles(ctx,w,h,time){
+    if(!sparklesOn)return;
+    particles.forEach(p=>{
+      const pulse=.5+.5*Math.sin(time*p.speed+p.phase),x=p.x*w,y=(p.y+.007*Math.sin(time*p.speed*.7+p.phase))*h,s=p.size*(w/720)*(0.72+pulse*.35);
+      ctx.save();ctx.globalCompositeOperation='screen';ctx.globalAlpha=.10+pulse*.30;
+      const colors=['255,255,255','255,213,231','205,232,255'],g=ctx.createRadialGradient(x,y,0,x,y,s);
+      g.addColorStop(0,`rgba(${colors[p.tint]},.62)`);g.addColorStop(.22,`rgba(${colors[p.tint]},.24)`);g.addColorStop(1,`rgba(${colors[p.tint]},0)`);
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,s,0,Math.PI*2);ctx.fill();ctx.restore();
+    });
+  }
+  function compose(ctx,w,h,time=performance.now()){
+    ctx.clearRect(0,0,w,h);drawCamera(ctx,w,h);beautyPass(ctx,w,h);drawSoftSparkles(ctx,w,h,time);ctx.drawImage(frame,0,0,w,h);
+  }
+  async function takePhoto(){
+    if(!video.videoWidth)return;compose(pctx,photo.width,photo.height);
+    lastBlob=await new Promise(resolve=>photo.toBlob(resolve,'image/jpeg',.95));lastKind='photo';showResult('photo');
+  }
+  function supportedMime(){
+    return ['video/mp4;codecs=h264,aac','video/mp4','video/webm;codecs=vp9,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported?.(t))||'';
+  }
+  async function startRecording(){
+    if(!window.MediaRecorder||!recCanvas.captureStream){alert('A gravação não é compatível com este navegador. Atualize o Safari ou Chrome.');return}
+    chunks=[];try{audioStream=await navigator.mediaDevices.getUserMedia({audio:true,video:false})}catch(e){audioStream=null}
+    const composed=recCanvas.captureStream(30);audioStream?.getAudioTracks().forEach(t=>composed.addTrack(t));
+    const mime=supportedMime();try{recorder=new MediaRecorder(composed,mime?{mimeType:mime}:undefined)}catch(e){recorder=new MediaRecorder(composed)}
+    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+    recorder.onstop=()=>{
+      const type=recorder.mimeType||chunks[0]?.type||'video/mp4';lastBlob=new Blob(chunks,{type});lastKind='video';
+      audioStream?.getTracks().forEach(t=>t.stop());cancelAnimationFrame(raf);showResult('video');
+    };
+    recorder.start(250);recording=true;startedAt=performance.now();shot.classList.add('recording');timer.textContent='00:00';
+    renderRecording();
+  }
+  function renderRecording(t=performance.now()){
+    if(!recording)return;compose(rctx,recCanvas.width,recCanvas.height,t);
+    const secs=Math.floor((t-startedAt)/1000);timer.textContent=`${String(Math.floor(secs/60)).padStart(2,'0')}:${String(secs%60).padStart(2,'0')}`;
+    if(secs>=60){stopRecording();return}raf=requestAnimationFrame(renderRecording);
+  }
+  function stopRecording(){if(!recording)return;recording=false;shot.classList.remove('recording');recorder?.stop()}
+  shot.onclick=()=>mode==='photo'?takePhoto():(recording?stopRecording():startRecording());
 
-  async function shoot(){
-    if(!video.videoWidth)return;
-    const r=coverRect(video.videoWidth,video.videoHeight,canvas.width,canvas.height);
-    ctx.save();ctx.filter=filterCSS[selected];
-    if(facing==='user'){ctx.translate(canvas.width,0);ctx.scale(-1,1);ctx.drawImage(video,r.x,r.y,r.w,r.h);}else ctx.drawImage(video,r.x,r.y,r.w,r.h);
-    ctx.restore(); if(selected==='matte')addMatte(); if(selected==='rose')addRose(); if(selected==='glow')addGlow();
-    if(sparklesOn)addPhotoSparkles(); ctx.drawImage(frame,0,0,canvas.width,canvas.height);
-    lastBlob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',.95));
-    canvas.style.display='block';controls.style.display='none';topbar.style.display='none';sparkLayer.style.display='none';frame.style.display='none';resultActions.style.display='grid';
+  function showResult(kind){
+    controls.style.display='none';topbar.style.display='none';sparkLayer.style.display='none';frame.style.display='none';resultActions.style.display='grid';
+    if(kind==='photo'){photo.style.display='block'}else{
+      if(resultURL)URL.revokeObjectURL(resultURL);resultURL=URL.createObjectURL(lastBlob);videoResult.src=resultURL;videoResult.style.display='block';videoResult.play().catch(()=>{});
+    }
+    q('#save').textContent=kind==='photo'?'Salvar foto':'Salvar vídeo';
   }
-  document.querySelector('#shot').onclick=shoot;
-  document.querySelector('#again').onclick=()=>{canvas.style.display='none';controls.style.display='flex';topbar.style.display='flex';sparkLayer.style.display=sparklesOn?'block':'none';frame.style.display='block';resultActions.style.display='none';};
-  document.querySelector('#save').onclick=async()=>{
-    if(!lastBlob)return; const file=new File([lastBlob],'foto-bailey-5-anos.jpg',{type:'image/jpeg'});
-    if(navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'Bailey 5 anos'});return;}catch(e){if(e.name==='AbortError')return;}}
-    const a=document.createElement('a');a.href=URL.createObjectURL(lastBlob);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  q('#again').onclick=()=>{
+    photo.style.display='none';videoResult.pause();videoResult.style.display='none';videoResult.removeAttribute('src');
+    controls.style.display='flex';topbar.style.display='flex';sparkLayer.style.display=sparklesOn?'block':'none';frame.style.display='block';resultActions.style.display='none';
   };
-  if(!navigator.mediaDevices?.getUserMedia)status.innerHTML='<div><strong>Navegador incompatível</strong><p>Abra este link no Chrome ou Safari atualizado.</p></div>';
+  q('#save').onclick=async()=>{
+    if(!lastBlob)return;const ext=lastKind==='photo'?'jpg':(lastBlob.type.includes('webm')?'webm':'mp4');
+    const file=new File([lastBlob],`bailey-5-anos.${ext}`,{type:lastBlob.type});
+    if(navigator.canShare?.({files:[file]})){try{await navigator.share({files:[file],title:'Bailey 5 anos'});return}catch(e){if(e.name==='AbortError')return}}
+    const a=document.createElement('a');a.href=URL.createObjectURL(lastBlob);a.download=file.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+  };
+  if(!navigator.mediaDevices?.getUserMedia)status.innerHTML='<div><strong>Navegador incompatível</strong><p>Abra o link no Safari ou Chrome atualizado.</p></div>';
 })();
 </script>
 </body>
